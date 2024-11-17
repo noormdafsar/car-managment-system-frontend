@@ -28,6 +28,17 @@ const CarDetailsPage = () => {
   if (error) return <div>Error: {error}</div>;
   if (!car) return <div>Car not found</div>;
 
+  const handleDelete = async () => {
+    if (window.confirm('Are you sure you want to delete this car?')) {
+      try {
+        await deleteCar(id);
+        navigate('/dashboard', { replace: true });
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+  };
+
   return (
     <div className="container mx-auto py-8">
       <div className="bg-white rounded-lg shadow-md p-6">
@@ -64,6 +75,12 @@ const CarDetailsPage = () => {
             className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
           >
             Edit
+          </button>
+          <button
+            onClick={handleDelete}
+            className="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
+          >
+            Delete
           </button>
         </div>
       </div>

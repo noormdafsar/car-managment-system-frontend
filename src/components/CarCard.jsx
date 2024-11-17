@@ -1,7 +1,24 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import { deleteCar } from '../utils/api';
 
 const CarCard = ({ car }) => {
+  const navigate = useNavigate();
+
+  const handleDelete = async (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (window.confirm('Are you sure you want to delete this car?')) {
+      try {
+        await deleteCar(car._id);
+        navigate('/dashboard', { replace: true });
+        window.location.reload();
+      } catch (err) {
+        console.error('Failed to delete car: ', err);
+      }
+    }
+  };
   return (
     <div className="bg-white rounded-lg shadow-md overflow-hidden">
       <img
@@ -20,6 +37,12 @@ const CarCard = ({ car }) => {
           >
             View
           </Link>
+          <button
+              onClick={handleDelete}
+              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+            >
+              Delete
+            </button>
         </div>
       </div>
     </div>
